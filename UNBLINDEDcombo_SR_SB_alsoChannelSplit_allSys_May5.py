@@ -1001,7 +1001,7 @@ def main():
             print(
                 f"\n\n\n Running the UNBLINDED LIMIT (channel wise) : combine -M AsymptoticLimits {workspace_file} -m {m}"
             )
-            combine_command = f"combine -M AsymptoticLimits {workspace_file} -m {m}"
+            combine_command = f"combine -M AsymptoticLimits {workspace_file} -m {m} --run blind"
             run_command(combine_command)
             run_command(
                 f"mv higgsCombineTest.AsymptoticLimits.mH{m}.root {output_dir_channel}/"
