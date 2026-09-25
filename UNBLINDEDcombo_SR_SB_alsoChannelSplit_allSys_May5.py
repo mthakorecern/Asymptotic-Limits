@@ -79,7 +79,7 @@ def plot_limits(json_file, output_dir, year, channel=None):
     # plt.plot(masses, observed, "o-", color="black", label="Observed", zorder=11)
 
     # Expected: dashed black line
-    plt.plot(masses, expected, "--", color="black", label="Expected", zorder=10)
+    plt.plot(masses, expected, "o-", color="black", label="Expected", zorder=10)
 
     # 1σ and 2σ bands
     plt.fill_between(
@@ -999,7 +999,7 @@ def main():
             output_dir_channel = f"{output_dir}/{channel}"
             os.makedirs(output_dir_channel, exist_ok=True)
             print(
-                f"\n\n\n Running the UNBLINDED LIMIT (channel wise) : combine -M AsymptoticLimits {workspace_file} -m {m}"
+                f"\n\n\n Running the UNBLINDED LIMIT (channel wise) : combine -M AsymptoticLimits {workspace_file} -m {m} --run blind"
             )
             combine_command = f"combine -M AsymptoticLimits {workspace_file} -m {m} --run blind"
             run_command(combine_command)
