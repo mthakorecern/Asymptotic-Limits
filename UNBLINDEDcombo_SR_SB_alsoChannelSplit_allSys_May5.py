@@ -94,13 +94,17 @@ def plot_limits(json_file, output_dir, year, channel=None):
     plt.xlabel(r"$m_{X}$ (GeV)")
     plt.ylabel(r"$95\%$ CL limit on $\sigma_{HH}$ (fb)")
     plt.yscale("log")
-    plt.ylim(0.5, 1e4)
+    plt.ylim(0.1, 1e3)
+    plt.tick_params(axis='both', which='minor', direction='in', top=False, right=True, length=4)
+    plt.tick_params(axis='both', which='major', direction='in', top=False, right=True, length=10)
+
     plt.legend(loc="upper right")
+    plt.legend(frameon=False) 
     plt.legend(title=r"$X \rightarrow HH$ scaled to 1fb")
     plt.figtext(
         0.12,
         0.92,
-        "CMS Preliminary",
+        r"CMS $\mathit{Preliminary}$",
         ha="left",
         va="top",
         fontsize=12,
@@ -116,26 +120,6 @@ def plot_limits(json_file, output_dir, year, channel=None):
             fontsize=12,
             fontweight="bold",
         )
-    elif channel == "et":
-        plt.figtext(
-            0.14,
-            0.82,
-            "Electron - Tau",
-            ha="left",
-            va="top",
-            fontsize=12,
-            fontweight="bold",
-        )
-    elif channel == "mt":
-        plt.figtext(
-            0.14,
-            0.82,
-            "Muon - Tau",
-            ha="left",
-            va="top",
-            fontsize=12,
-            fontweight="bold",
-        )
     elif channel == "lt":
         plt.figtext(
             0.14,
@@ -146,16 +130,17 @@ def plot_limits(json_file, output_dir, year, channel=None):
             fontsize=12,
             fontweight="bold",
         )
-    plt.figtext(
-        0.12,
-        0.92,
-        "CMS Preliminary",
-        ha="left",
-        va="top",
-        fontsize=12,
-        fontweight="bold",
-    )
-    plt.figtext(0.88, 0.92, f"({year}, 13.6 TeV)", ha="right", va="top", fontsize=12)
+    elif channel == "all":
+        plt.figtext(
+            0.14,
+            0.82,
+            "All channels combined (spin - 0)",
+            ha="left",
+            va="top",
+            fontsize=12,
+            fontweight="bold",
+        )
+    plt.figtext(0.88, 0.92, r"109.08 $fb^{-1}$ (13.6 TeV)", ha="right", va="top", fontsize=12)
 
     # Save plot
     plt.savefig(f"{output_dir}/limit_plot_{year}.pdf")
@@ -999,7 +984,7 @@ def main():
             output_dir_channel = f"{output_dir}/{channel}"
             os.makedirs(output_dir_channel, exist_ok=True)
             print(
-                f"\n\n\n Running the UNBLINDED LIMIT (channel wise) : combine -M AsymptoticLimits {workspace_file} -m {m} --run blind"
+                f"\n\n\n Running the BLINDED LIMIT (channel wise) : combine -M AsymptoticLimits {workspace_file} -m {m} --run blind"
             )
             combine_command = f"combine -M AsymptoticLimits {workspace_file} -m {m} --run blind"
             run_command(combine_command)
@@ -1081,12 +1066,12 @@ def main():
     # modified_limit_json = f"{limit_dir}/limits_modified.json"
     # modify_limits_json(limit_json, modified_limit_json)
 
-    print("\n\n\n\n\n\n\n\n###-->Step 7: Plot the modified limits using Python 2<--###")
+    print("\n\n\n\n\n\n\n\n###-->Step 6: Plot the limits<--###")
     # plot_command = f"python2 plot_limits_py2.py --json_file {modified_limit_json} --output_dir {limit_dir} --year {year}"
     # run_command(plot_command)
-    print("I am printing non modified limits - Please beware if this is not intended")
+    # print("I am printing non modified limits - Please beware if this is not intended")
     # plot_limits(modified_limit_json, limit_dir, year)
-    plot_limits(limit_json, limit_dir, year)
+    plot_limits(limit_json, limit_dir, year, "all")
 
     # Collect and modify limits per channel
     for channel in ["leptau", "tautau"]:
